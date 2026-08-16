@@ -9799,9 +9799,9 @@ performance-now@^2.1.0:
   resolved "https://registry.npmmirror.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==
 
-"piclist@git+https://github.com/Palentum/PicList-Core.git#dev":
+"piclist@git+https://github.com/Palentum/PicList-Core.git#dev-dist":
   version "2.4.2"
-  resolved "git+https://github.com/Palentum/PicList-Core.git#e36dc1a978c770bd868eadd12abe52163a47c8a3"
+  resolved "git+https://github.com/Palentum/PicList-Core.git#be191dd5df2cf6d34df8e4bf585b16b5989236e6"
   dependencies:
     "@aws-sdk/client-s3" "3.1081.0"
     "@aws-sdk/lib-storage" "3.1081.0"
