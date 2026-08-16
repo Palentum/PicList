@@ -291,7 +291,7 @@ jobs:
         uses: softprops/action-gh-release@v3
         continue-on-error: true
         with:
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GH_TOKEN || github.token }}
           tag_name: ${{ github.event.inputs.tag_name }}
           draft: true
           prerelease: ${{ github.event.inputs.publish_enabled == 'false' || github.event.inputs.tag_name == 'preview'  }}
