@@ -174,7 +174,7 @@ jobs:
         if: github.event.inputs.build_os == matrix.filter || github.event.inputs.build_os == 'All'
         shell: bash
         run: |
-          if [ "${{ matrix.os }}" == "windows-11-arm" ]; then
+          if [ "${{ matrix.os }}" == "windows-11-arm" ] || [ -z "$CSC_LINK" ]; then
             export CSC_IDENTITY_AUTO_DISCOVERY=false
             unset CSC_LINK WIN_CSC_LINK CSC_KEY_PASSWORD
           fi
