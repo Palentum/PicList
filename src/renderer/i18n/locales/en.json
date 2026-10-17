@@ -713,9 +713,7 @@
       "strictSearch": "Strict Search",
       "strictSearchDescription": "Only show plugins that contain the search term in name",
       "title": "Plugins",
-      "tryDifferentSearch": "Try Different Search Keywords",
-      "updateAll": "Update All Plugins",
-      "updateSuccess": "Update Success"
+      "tryDifferentSearch": "Try Different Search Keywords"
     },
     "rename": {
       "placeholder": "Please enter new file name"
@@ -1001,35 +999,6 @@
         "windowBehavior": "Window Behavior"
       },
       "title": "Settings",
-      "update": {
-        "applicationUpdates": "Application Updates",
-        "checkUpdate": "Check for Updates",
-        "checkUpdateDialogDesc": "Check for and install the latest version",
-        "clickToCheck": "Click to Check",
-        "currentVersion": "Current Version",
-        "currentVersionLabel": "Installed",
-        "daysAgo": "{days} days ago",
-        "getting": "Getting...",
-        "hasNewVersion": "PicList has been updated, please click OK to restart and trigger the update",
-        "hoursAgo": "{hours} hours ago",
-        "justNow": "just now",
-        "lastUpdated": "Last updated",
-        "latestReleaseNotes": "Latest Release Notes",
-        "loadingReleaseNotes": "Loading release notes...",
-        "minutesAgo": "{minutes} minutes ago",
-        "networkError": "Network error, please check your network connection",
-        "newestVersion": "Newest Version: {version}",
-        "noReleaseNotes": "No release notes available",
-        "openUpdateHelper": "Open Update Helper",
-        "openUpdateHelperDesc": "Show notification when a new version is available",
-        "refresh": "Refresh",
-        "releaseNotes": "Release Notes",
-        "releaseNotesError": "Failed to load release notes. Please check your network connection.",
-        "retry": "Retry",
-        "title": "Update",
-        "updateNow": "Update Now",
-        "updatePreferences": "Update Preferences"
-      },
       "upload": {
         "advancedRname": "Advanced Rename",
         "advancedRnameDesc": "Use advanced rename format to customize file names",
@@ -1157,17 +1126,6 @@
       "openMainWindow": "Open Main Window",
       "uploaded": "Uploaded",
       "waitForUpload": "Waiting for Upload"
-    },
-    "update": {
-      "download": "Download",
-      "downloading": "Downloading",
-      "goToDownloadPage": "Go to Download Page",
-      "installNow": "Install Now",
-      "later": "Later",
-      "newUpdateAvailable": "New Update Available",
-      "noMoreNotice": "Do not show this again",
-      "releaseNotes": "What's New",
-      "updateReady": "Update Ready to Install"
     },
     "upload": {
       "addToFavorites": "Add current picbed to quick switch",

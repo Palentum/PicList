@@ -124,22 +124,6 @@ const handleNPMError = (): IDispose => {
   return () => picgo.off(ICOREBuildInEvent.FAILED, handler)
 }
 
-export const handlePluginUpdate = async (fullName: string | string[]) => {
-  const window = windowManager.get(IWindowList.SETTING_WINDOW)
-  const dispose = handleNPMError()
-  const res = await picgo.pluginHandler.update(typeof fullName === 'string' ? [fullName] : fullName)
-  if (res.success) {
-    window?.webContents?.send('updateSuccess', res.body[0])
-  } else {
-    showNotification({
-      title: t('main.notification.updatePluginFailed'),
-      body: res.body as string,
-    })
-  }
-  window?.webContents.send('hideLoading')
-  dispose()
-}
-
 export const handlePluginUninstall = async (fullName: string) => {
   const window = windowManager.get(IWindowList.SETTING_WINDOW)
   const dispose = handleNPMError()
@@ -226,8 +210,4 @@ export const pluginImportLocalFunc = async (event: IIPCEvent) => {
     }
   }
   event.sender.send('hideLoading')
-}
-
-export const pluginUpdateAllFunc = async (_: IIPCEvent, args: [list: string[]]) => {
-  handlePluginUpdate(args[0])
 }

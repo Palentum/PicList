@@ -1,5 +1,4 @@
 interface ISettingForm {
-  showUpdateTip: boolean
   autoStart: boolean
   rename: boolean
   autoRename: boolean

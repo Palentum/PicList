@@ -682,94 +682,6 @@
             </SettingCard>
           </SettingSection>
         </div>
-        <div
-          v-if="currentTab === 'update'"
-          class="border4 no-scrollbar flex h-full w-full flex-1 flex-col gap-6 overflow-auto p-4"
-        >
-          <SettingSection :icon="RefreshCw" :title="t('pages.settings.update.applicationUpdates')">
-            <CustomNavCard noarrow :icon="RotateCcw" :title="t('pages.settings.update.currentVersion')">
-              <template #description>
-                <div class="flex items-center gap-2">
-                  <span class="rounded-md bg-accent/30 px-2 py-1 text-sm font-semibold text-secondary"
-                    >v{{ version }}</span
-                  >
-                </div>
-              </template>
-              <template #extra>
-                <CustomButton
-                  :icon="RefreshCw"
-                  :text="t('pages.settings.update.clickToCheck')"
-                  type="secondary"
-                  @click="checkUpdate"
-                />
-              </template>
-            </CustomNavCard>
-
-            <SettingCard p1>
-              <CustomSwitch
-                v-model="formOfSetting.showUpdateTip"
-                small
-                no-border
-                :title="t('pages.settings.update.openUpdateHelper')"
-                :description="t('pages.settings.update.openUpdateHelperDesc')"
-              />
-            </SettingCard>
-          </SettingSection>
-
-          <!-- Release Notes Section -->
-          <SettingSection
-            :only-one-row="true"
-            :icon="BookOpen"
-            :title="t('pages.settings.update.latestReleaseNotes')"
-            class="relative"
-          >
-            <div class="absolute top-4 right-4 flex items-center gap-2">
-              <CustomButton
-                :icon="RefreshCw"
-                :text="t('pages.settings.update.refresh')"
-                type="secondary"
-                :disabled="fetchingReleaseNotes"
-                @click="fetchReleaseNotesManually"
-              />
-            </div>
-            <div class="relative w-full rounded-lg border border-border bg-bg-secondary shadow-sm">
-              <div class="max-h-[400px] overflow-y-auto bg-bg-secondary">
-                <div
-                  v-if="fetchingReleaseNotes"
-                  class="flex flex-col items-center justify-center gap-2 p-4 text-center text-sm font-semibold text-secondary"
-                >
-                  <div class="flex h-12 w-12 items-center justify-center rounded-full bg-accent/20 text-accent">
-                    <RefreshCw :size="24" class="animate-ping" />
-                  </div>
-                  <span>{{ t('pages.settings.update.loadingReleaseNotes') }}</span>
-                </div>
-                <div v-else-if="releaseNotes" class="notes-body" v-html="renderedReleaseNotes"></div>
-                <div
-                  v-else-if="releaseNotesError"
-                  class="flex flex-col items-center justify-center gap-6 bg-error/10 p-4 text-sm text-danger"
-                >
-                  <div class="text-[4rem]">⚠️</div>
-                  <span>{{ releaseNotesError }}</span>
-                  <CustomButton
-                    :icon="RefreshCw"
-                    :text="t('pages.settings.update.retry')"
-                    type="secondary"
-                    @click="fetchReleaseNotesManually"
-                  />
-                </div>
-              </div>
-
-              <div v-if="releaseNotesLastFetch" class="border-t border-border-secondary bg-bg-secondary p-3 text-right">
-                <small class="flex flex-row justify-end gap-1 text-xs text-secondary">
-                  <RefreshCw :size="12" />
-                  <div>
-                    {{ t('pages.settings.update.lastUpdated') }}: {{ formatLastFetchTime(releaseNotesLastFetch) }}
-                  </div>
-                </small>
-              </div>
-            </div>
-          </SettingSection>
-        </div>
       </div>
     </div>
 
@@ -885,57 +797,6 @@
           :description="t('pages.settings.system.rawPicGoSizeHint')"
         />
       </SettingSection>
-    </CustomModal>
-
-    <!-- Check Update Dialog -->
-    <CustomModal
-      v-if="checkUpdateVisible"
-      v-model:visible="checkUpdateVisible"
-      height="auto"
-      width="500px"
-      :title="t('pages.settings.update.checkUpdate')"
-    >
-      <div class="mb-4 no-scrollbar overflow-y-auto p-1">
-        <div class="mt-5 flex items-center justify-center gap-4">
-          <div class="min-w-[120px] flex-1 rounded-lg border border-border bg-bg-tertiary px-5 py-4 text-center">
-            <div class="mb-1.5 text-sm font-semibold text-secondary">
-              {{ t('pages.settings.update.currentVersionLabel') }}
-            </div>
-            <div class="text-lg font-bold text-main">v{{ version }}</div>
-          </div>
-          <div class="shrink-0 text-tertiary">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </div>
-          <div
-            class="group latest min-w-[120px] flex-1 rounded-lg border border-border bg-bg-tertiary px-5 py-4 text-center"
-            :class="{ 'has-update': needUpdate }"
-          >
-            <div class="mb-1.5 text-sm font-semibold text-secondary group-[.has-update]:text-success">
-              {{ t('pages.settings.update.newestVersion') }}
-            </div>
-            <div class="text-lg font-bold text-main group-[.has-update]:text-success">
-              {{ latestVersion ? `${latestVersion}` : t('pages.settings.update.getting') }}
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="needUpdate"
-          class="flex items-center justify-center gap-2 rounded-lg p-4 text-sm font-semibold text-success"
-        >
-          <RefreshCw :size="18" />
-          <span>{{ t('pages.settings.update.hasNewVersion') }}</span>
-        </div>
-      </div>
-      <template #footer>
-        <CustomButton type="secondary" :text="t('common.cancel')" @click="cancelCheckVersion" />
-        <CustomButton
-          type="primary"
-          :text="needUpdate ? t('pages.settings.update.updateNow') : t('common.confirm')"
-          @click="confirmCheckVersion"
-        />
-      </template>
     </CustomModal>
 
     <!-- Advanced Rename Dialog -->
@@ -1322,7 +1183,6 @@ import {
   Keyboard,
   Link,
   Monitor,
-  RefreshCw,
   RotateCcw,
   Server,
   Settings,
@@ -1330,10 +1190,7 @@ import {
   Store,
 } from '@lucide/vue'
 import { useStorage } from '@vueuse/core'
-import { compare } from 'compare-versions'
-import { marked } from 'marked'
 import type { IConfig } from 'piclist'
-import pkg from 'root/package.json'
 import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref, toRaw, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -1360,7 +1217,6 @@ import { enforceNumber } from '@/utils/common'
 import { configPaths } from '@/utils/configPaths'
 import { getConfig, saveConfig } from '@/utils/dataSender'
 import { II18nLanguage, IRPCActionType, ISartMode } from '@/utils/enum'
-import { getLatestVersion } from '@/utils/getLatestVersion'
 
 /* reactive data and refs */
 const { t, locale } = useI18n()
@@ -1383,7 +1239,6 @@ const currentShortUrlServer = ref()
 /* dialog visibility refs */
 const logFileVisible = ref(false)
 const customLinkVisible = ref(false)
-const checkUpdateVisible = ref(false)
 const serverVisible = ref(false)
 const webServerVisible = ref(false)
 const syncVisible = ref(false)
@@ -1394,17 +1249,12 @@ const editorContent = ref('// 在这里开始编写代码...\nfunction hello() {
 const editorLanguage = ref('json')
 const currentEditFile = ref('')
 
-const latestVersion = ref('')
-const releaseNotes = ref('')
-const releaseNotesError = ref('')
-const releaseNotesLastFetch = ref<Date | null>(null)
-const fetchingReleaseNotes = ref(false)
 const mainWindowSizeVisible = ref(false)
 const advancedRenameVisible = ref(false)
 const imageProcessDialogVisible = ref(false)
 const rawPicGoSize = ref(false)
 const customLink = ref('![$fileName]($url)')
-const currentTab = useStorage<'system' | 'sync' | 'upload' | 'advanced' | 'update'>('settings-current-tab', 'system')
+const currentTab = useStorage<'system' | 'sync' | 'upload' | 'advanced'>('settings-current-tab', 'system')
 const server = ref({ port: 36677, host: '0.0.0.0', enable: true })
 const advancedRename = ref({ enable: false, format: '{filename}' })
 const sync = ref<any>({
@@ -1430,7 +1280,6 @@ const defaultStartMode = {
 }
 
 const formOfSetting = ref<ISettingForm>({
-  showUpdateTip: true,
   autoStart: false,
   rename: false,
   autoRename: false,
@@ -1487,8 +1336,12 @@ const tabs = computed(() => [
   { id: 'sync', label: t('pages.settings.sync.title'), icon: RotateCcw },
   { id: 'upload', label: t('pages.settings.upload.title'), icon: CloudUpload },
   { id: 'advanced', label: t('pages.settings.advanced.title'), icon: Server },
-  { id: 'update', label: t('pages.settings.update.title'), icon: RefreshCw },
 ])
+
+// 已持久化的标签页可能已被移除（如旧的 update 页），回退到默认页
+if (!tabs.value.some(tab => tab.id === currentTab.value)) {
+  currentTab.value = 'system'
+}
 
 const syncTaskList = computed(() => [
   { task: IRPCActionType.CONFIGURE_UPLOAD_COMMON_CONFIG, label: t('pages.settings.sync.commonConfig'), number: 2 },
@@ -1514,21 +1367,9 @@ const secondModeList = computed(() => [
   { label: t('pages.settings.upload.secondPicBedMode.seperate'), value: 'seperate' },
 ])
 
-const needUpdate = computed(() => {
-  if (latestVersion.value) {
-    return compareVersion2Update(version, latestVersion.value)
-  }
-  return false
-})
-
-const renderedReleaseNotes = computed(() => {
-  return marked(releaseNotes.value, { breaks: true, gfm: true })
-})
-
 /* constants and enums */
 
 const syncType = ['github', 'gitee', 'gitea', 'webdav']
-const version = pkg.version
 
 const buildInThemesList = [
   'adwaita.css',
@@ -1545,8 +1386,6 @@ const buildInThemesList = [
   'win11.css',
 ]
 
-const RELEASE_NOTES_CACHE_DURATION = 30 * 60 * 1000
-
 const shortUrlServerList = [
   { label: 'c1n', value: 'c1n' },
   { label: 'yourls', value: 'yourls' },
@@ -1562,7 +1401,6 @@ const languageList = [
 
 const formKeys = Object.keys(formOfSetting.value) as (keyof ISettingForm)[]
 const autoWatchKeys = [
-  'showUpdateTip',
   'autoImport',
   'autoImportPicBed',
   'useBuiltinClipboard',
@@ -1684,8 +1522,6 @@ const addWatch = () => {
   watch(currentLanguage, newVal => {
     if (newVal) {
       handleLanguageChange(newVal)
-      // Fetch release notes when language changes
-      fetchReleaseNotes(true)
     }
   })
 
@@ -1823,7 +1659,7 @@ function confirmSyncSetting() {
 }
 
 function tabClick(tabId: string) {
-  currentTab.value = tabId as 'system' | 'sync' | 'upload' | 'advanced' | 'update'
+  currentTab.value = tabId as 'system' | 'sync' | 'upload' | 'advanced'
 }
 
 async function loadThemes() {
@@ -1975,7 +1811,6 @@ async function initData() {
   }
   formOfSetting.value.logFileSizeLimit = enforceNumber(settings.logFileSizeLimit) || 10
   addWatch()
-  fetchReleaseNotes()
 }
 
 function initArray(arrayT: string | string[], defaultValue: string[]) {
@@ -2140,82 +1975,6 @@ function handleAutoStartChange(val: ICheckBoxValueType) {
   window.electron.sendRPC(IRPCActionType.PICLIST_AUTO_START, val)
 }
 
-function compareVersion2Update(current: string, latest: string): boolean {
-  return compare(current, latest, '<')
-}
-
-function formatLastFetchTime(date: Date): string {
-  const now = new Date()
-  const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
-
-  if (diffInMinutes < 1) {
-    return t('pages.settings.update.justNow')
-  } else if (diffInMinutes < 60) {
-    return t('pages.settings.update.minutesAgo', { minutes: diffInMinutes })
-  } else {
-    const hours = Math.floor(diffInMinutes / 60)
-    if (hours < 24) {
-      return t('pages.settings.update.hoursAgo', { hours })
-    } else {
-      const days = Math.floor(hours / 24)
-      return t('pages.settings.update.daysAgo', { days })
-    }
-  }
-}
-
-async function fetchReleaseNotes(forceRefresh = false): Promise<void> {
-  if (!forceRefresh && releaseNotesLastFetch.value) {
-    const timeSinceLastFetch = Date.now() - releaseNotesLastFetch.value.getTime()
-    if (timeSinceLastFetch < RELEASE_NOTES_CACHE_DURATION) {
-      return
-    }
-  }
-
-  try {
-    fetchingReleaseNotes.value = true
-    releaseNotesError.value = ''
-
-    const isEnglish = currentLanguage.value === 'en'
-    const fileName = isEnglish ? 'currentVersion_en.md' : 'currentVersion.md'
-    const url = `https://raw.githubusercontent.com/Kuingsmile/piclist/dev/${fileName}`
-
-    const response = await fetch(url)
-    if (response.ok) {
-      const content = await response.text()
-      releaseNotes.value = content
-      releaseNotesLastFetch.value = new Date()
-      releaseNotesError.value = ''
-    } else {
-      throw new Error(`HTTP ${response.status}`)
-    }
-  } catch (error) {
-    console.error('Failed to fetch release notes:', error)
-    releaseNotesError.value = t('pages.settings.update.releaseNotesError')
-  } finally {
-    fetchingReleaseNotes.value = false
-  }
-}
-
-async function fetchReleaseNotesManually(): Promise<void> {
-  await fetchReleaseNotes(true)
-}
-
-async function checkUpdate() {
-  checkUpdateVisible.value = true
-  latestVersion.value = (await getLatestVersion()) || t('pages.settings.update.networkError')
-}
-
-function confirmCheckVersion() {
-  if (needUpdate.value) {
-    window.electron.sendRPC(IRPCActionType.RELOAD_APP)
-  }
-  checkUpdateVisible.value = false
-}
-
-function cancelCheckVersion() {
-  checkUpdateVisible.value = false
-}
-
 function confirmWebServerSetting() {
   if (formOfSetting.value.enableWebServer) {
     window.electron.sendRPC(IRPCActionType.ADVANCED_RESTART_WEB_SERVER)
@@ -2334,5 +2093,3 @@ onBeforeUnmount(() => {
 <script lang="ts">
 export default { name: 'SettingPage' }
 </script>
-
-<style scoped src="./css/PicgoSetting.css"></style>

@@ -1,6 +1,3 @@
-export const RELEASE_URL = 'https://api.github.com/repos/Kuingsmile/PicList/releases'
-export const RELEASE_URL_BACKUP = 'https://release.piclist.cn'
-
 export const cancelDownloadLoadingFileList = 'cancelDownloadLoadingFileList'
 export const refreshDownloadFileTransferList = 'refreshDownloadFileTransferList'
 

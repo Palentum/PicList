@@ -10,17 +10,7 @@
         </div>
       </div>
 
-      <div class="flex flex-1 items-center justify-center no-drag-region">
-        <div v-if="isShowprogress" class="flex w-full max-w-[600px] min-w-[100px] items-center gap-2">
-          <div class="h-[14px] w-full max-w-[600px] min-w-[100px] flex-1 overflow-hidden rounded-[2px] bg-border">
-            <div
-              class="h-full rounded-[2px] bg-success transition-all duration-300 ease-in-out"
-              :style="{ width: `${progress}%` }"
-            />
-          </div>
-          <span class="min-w-[35px] text-[11px] text-secondary">{{ progress }}%</span>
-        </div>
-      </div>
+      <div class="flex flex-1 items-center justify-center no-drag-region" />
 
       <div class="flex items-center no-drag-region">
         <div class="flex items-center gap-[8px]">
@@ -50,13 +40,11 @@
 
 <script setup lang="ts">
 import { MinusIcon, PinIcon, ShrinkIcon, XIcon } from '@lucide/vue'
-import { computed, onBeforeMount, onBeforeUnmount, ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import { osGlobal } from '@/hooks/useGlobal'
 import { IRPCActionType } from '@/utils/enum'
 
-const isShowprogress = ref(false)
-const progress = ref(0)
 const isAlwaysOnTop = ref(false)
 
 const defaultLogo = computed(() => `${import.meta.env.BASE_URL}roundLogo.png`)
@@ -69,19 +57,6 @@ function setAlwaysOnTop() {
 const minimizeWindow = () => window.electron.sendRPC(IRPCActionType.MINIMIZE_WINDOW)
 const openMiniWindow = () => window.electron.sendRPC(IRPCActionType.OPEN_MINI_WINDOW)
 const closeWindow = () => window.electron.sendRPC(IRPCActionType.CLOSE_WINDOW)
-
-function uploadProcessHandler(data: { progress: number }) {
-  isShowprogress.value = data.progress !== 100 && data.progress !== 0
-  progress.value = data.progress
-}
-
-onBeforeMount(() => {
-  window.electron.ipcRendererOn('updateProgress', uploadProcessHandler)
-})
-
-onBeforeUnmount(() => {
-  window.electron.ipcRendererRemoveAllListeners('updateProgress')
-})
 </script>
 
 <style scoped>

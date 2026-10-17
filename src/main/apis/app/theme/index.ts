@@ -85,6 +85,5 @@ export async function applyTheme(theme: string): Promise<void> {
   const basePath = path.basename(theme)
   const css = await readTheme(basePath)
   windowManager.get(IWindowList.SETTING_WINDOW)?.webContents.send('THEME_UPDATE', css)
-  windowManager.get(IWindowList.UPDATE_WINDOW)?.webContents.send('THEME_UPDATE', css)
   windowManager.get(IWindowList.TRAY_WINDOW)?.webContents.send('THEME_UPDATE', css)
 }

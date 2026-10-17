@@ -16,7 +16,6 @@ import ScriptPage from '@/pages/ScriptPage.vue'
 import ShortKeyPage from '@/pages/ShortKey.vue'
 import Toolbox from '@/pages/Toolbox.vue'
 import TrayPage from '@/pages/TrayPage.vue'
-import UpdatePage from '@/pages/UpdatePage.vue'
 import UploadPage from '@/pages/Upload.vue'
 import UploaderConfigPage from '@/pages/UploaderConfigPage.vue'
 import * as config from '@/router/config'
@@ -126,11 +125,6 @@ export default createRouter({
       path: '/toolbox-page',
       name: config.TOOLBOX_CONFIG_PAGE,
       component: Toolbox,
-    },
-    {
-      path: '/update-page',
-      name: config.UPDATE_PAGE,
-      component: UpdatePage,
     },
     {
       path: '/:pathMatch(.*)*',

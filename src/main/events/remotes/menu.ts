@@ -14,7 +14,7 @@ import {
   SHOW_FIRST_TIME_GUIDE,
   SHOW_MAIN_PAGE_QRCODE,
 } from '~/events/constant'
-import { handlePluginUninstall, handlePluginUpdate } from '~/events/rpc/routes/plugin/utils'
+import { handlePluginUninstall } from '~/events/rpc/routes/plugin/utils'
 import { t } from '~/i18n'
 import clipboardPoll from '~/utils/clipboardPoll'
 import { setTrayToolTip } from '~/utils/common'
@@ -320,14 +320,6 @@ const buildPluginPageMenu = (plugin: IPicGoPlugin) => {
         const window = windowManager.get(IWindowList.SETTING_WINDOW)
         window?.webContents?.send(PICGO_HANDLE_PLUGIN_ING, plugin.fullName)
         handlePluginUninstall(plugin.fullName)
-      },
-    },
-    {
-      label: t('main.menu.updatePlugin'),
-      click() {
-        const window = windowManager.get(IWindowList.SETTING_WINDOW)
-        window?.webContents?.send(PICGO_HANDLE_PLUGIN_ING, plugin.fullName)
-        handlePluginUpdate(plugin.fullName)
       },
     },
   ] as (MenuItemConstructorOptions | MenuItem)[]

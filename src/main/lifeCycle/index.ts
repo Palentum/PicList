@@ -7,7 +7,6 @@ import bus from '@core/bus'
 import { themesDir } from '@core/datastore/dirs'
 import picgo from '@core/picgo'
 import logger from '@core/picgo/logger'
-import { remoteNoticeHandler } from 'apis/app/remoteNotice'
 import shortKeyHandler from 'apis/app/shortKey/shortKeyHandler'
 import { createTray, setDockMenu } from 'apis/app/system'
 import { uploadChoosedFiles, uploadClipboardFiles } from 'apis/app/uploader/apis'
@@ -19,7 +18,6 @@ import busEventList from '~/events/busEventList'
 import { rpcServer } from '~/events/rpc'
 import { startFileServer, stopFileServer } from '~/fileServer'
 import { initializeI18n } from '~/i18n'
-import { setupAutoUpdater } from '~/lifeCycle/autoUpdater'
 import fixPath from '~/lifeCycle/fixPath'
 import UpDownTaskQueue from '~/manage/datastore/upDownTaskQueue'
 import getManageApi from '~/manage/Main'
@@ -30,13 +28,12 @@ import { isAutoStartEnabled, setAutoStart } from '~/utils/autoStart'
 import beforeOpen from '~/utils/beforeOpen'
 import clipboardPoll from '~/utils/clipboardPoll'
 import { configPaths } from '~/utils/configPaths'
-import { II18nLanguage, IRemoteNoticeTriggerHook, ISartMode, IWindowList } from '~/utils/enum'
+import { II18nLanguage, ISartMode, IWindowList } from '~/utils/enum'
 import { getUploadFiles } from '~/utils/handleArgv'
 import { initI18n } from '~/utils/handleI18n'
 import { notificationList } from '~/utils/notification'
 import { runScriptInStage } from '~/utils/runScript'
 import { CLIPBOARD_IMAGE_FOLDER } from '~/utils/static'
-import updateChecker from '~/utils/updateChecker'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 process.noDeprecation = true
@@ -83,8 +80,6 @@ const handleStartUpFiles = (argv: string[], cwd: string) => {
 
   return false
 }
-
-await setupAutoUpdater()
 
 class LifeCycle {
   async #beforeReady() {
@@ -161,7 +156,6 @@ class LifeCycle {
         createTray(tooltip)
       }
       picgo.saveConfig({ [configPaths.needReload]: false })
-      updateChecker()
       process.nextTick(() => {
         shortKeyHandler.init()
       })
@@ -179,12 +173,6 @@ class LifeCycle {
           notice.show()
         }
       }
-      remoteNoticeHandler
-        .init()
-        .then(() => {
-          remoteNoticeHandler.triggerHook(IRemoteNoticeTriggerHook.APP_START)
-        })
-        .catch(() => {})
       if (startMode === ISartMode.MINI && process.platform !== 'darwin') {
         windowManager.create(IWindowList.MINI_WINDOW)
         const miniWindow = windowManager.get(IWindowList.MINI_WINDOW)

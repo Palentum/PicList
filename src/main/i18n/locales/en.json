@@ -23,7 +23,6 @@
       "startWatchClipboard": "Start Watch Clipboard",
       "stopWatchClipboard": "Stop Watch Clipboard",
       "uninstallPlugin": "Uninstall Plugin",
-      "updatePlugin": "Update Plugin",
       "uploadClipboardImage": "Upload Clipboard Image"
     },
     "notification": {
@@ -45,7 +44,6 @@
       "pluginRemoveGalleryItem": "A plugin is attempting to delete some gallery items, do you allow it?",
       "taskSuccessMsg": "{{completed}} Success, {{failed}} Failed",
       "uninstallPluginFailed": "Uninstall Plugin Failed",
-      "updatePluginFailed": "Update Plugin Failed",
       "uploadFailed": "Upload Failed",
       "uploading": "Uploading",
       "uploadNotPicturesTips": "Latest items in clipboard are not pictures",

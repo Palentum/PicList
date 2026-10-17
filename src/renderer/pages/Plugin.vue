@@ -19,12 +19,6 @@
             @click="handleImportLocalPlugin"
           />
           <CustomButton
-            type="secondary"
-            :icon="RefreshCwIcon"
-            :text="t('pages.plugin.updateAll')"
-            @click="handleUpdateAllPlugin"
-          />
-          <CustomButton
             type="primary"
             :icon="ExternalLinkIcon"
             :text="t('pages.plugin.openRemoteList')"
@@ -124,14 +118,6 @@
                 CLI
               </div>
 
-              <!-- Update Badge -->
-              <div
-                v-if="latestVersionMap[item.fullName] && latestVersionMap[item.fullName] !== item.version"
-                class="absolute top-4 right-4 z-1 rounded-sm bg-success px-2 py-1 text-sm font-semibold text-white"
-              >
-                NEW
-              </div>
-
               <!-- Plugin Header -->
               <div class="mb-4 flex items-start gap-2">
                 <img
@@ -157,14 +143,6 @@
                     <p class="m-0 overflow-hidden text-sm text-ellipsis whitespace-nowrap text-secondary">
                       {{ item.author.replace(/<.*>/, '') }}
                     </p>
-                    <span
-                      v-if="updateTimeMap[item.fullName]"
-                      class="flex shrink-0 items-center gap-1 text-xs text-secondary/70"
-                      :title="t('pages.plugin.lastUpdated')"
-                    >
-                      <CalendarIcon :size="11" />
-                      {{ updateTimeMap[item.fullName] }}
-                    </span>
                   </div>
                 </div>
               </div>
@@ -437,7 +415,7 @@ import {
 } from '@lucide/vue'
 import { useStorage } from '@vueuse/core'
 import { debounce, DebouncedFunc } from 'lodash-es'
-import { computed, onBeforeMount, onBeforeUnmount, reactive, ref, toRaw, useTemplateRef, watch } from 'vue'
+import { computed, onBeforeMount, onBeforeUnmount, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import CustomButton from '@/components/common/CustomButton.vue'
@@ -466,8 +444,6 @@ const dialogVisible = ref(false)
 const pluginNameList = ref<string[]>([])
 const loading = ref(true)
 const needReload = ref(false)
-const latestVersionMap = reactive<Record<string, string>>({})
-const updateTimeMap = reactive<Record<string, string>>({})
 const $configForm = useTemplateRef('$configForm')
 const strictSearch = useStorage('plugin-strict-search', true)
 const showBrowseDialog = ref(false)
@@ -522,17 +498,6 @@ function setSrc(e: Event) {
   target.src = import.meta.env.BASE_URL + 'roundLogo.png'
 }
 
-async function getLatestVersionOfPlugIn(pluginName: string) {
-  try {
-    const res = await fetch(`https://registry.npmjs.com/${pluginName}`)
-    const data = await res.json()
-    latestVersionMap[pluginName] = data['dist-tags'].latest
-    updateTimeMap[pluginName] = (data.time?.modified || '').split('T')[0]
-  } catch (err) {
-    console.error(err)
-  }
-}
-
 function hideLoadingHandler() {
   loading.value = false
 }
@@ -549,9 +514,6 @@ function picgoHandlePluginDoneHandler(fullName: string) {
 function pluginListHandler(list: IPicGoPlugin[]) {
   pluginList.value = list
   pluginNameList.value = list.map(item => item.fullName)
-  for (const item of pluginList.value) {
-    getLatestVersionOfPlugIn(item.fullName)
-  }
   loading.value = false
 }
 
@@ -570,19 +532,6 @@ function installPluginHandler({ success, body }: { success: boolean; body: strin
       item.hasInstall = success
     }
   })
-}
-
-function updateSuccessHandler(plugin: string) {
-  loading.value = false
-  pluginList.value.forEach(item => {
-    if (item.fullName === plugin) {
-      item.ing = false
-      item.hasInstall = true
-    }
-    updatePicBeds()
-  })
-  handleReload()
-  getPluginList()
 }
 
 function uninstallSuccessHandler(plugin: string) {
@@ -653,21 +602,6 @@ function installPlugin(item: IPicGoPlugin) {
 
 function reloadApp() {
   window.electron.sendRPC(IRPCActionType.RELOAD_APP)
-}
-
-async function handleReload() {
-  saveConfig({
-    needReload: true,
-  })
-  needReload.value = true
-  if ('Notification' in window) {
-    const successNotification = new Notification(t('pages.plugin.updateSuccess'), {
-      body: t('pages.plugin.needRestart'),
-    })
-    successNotification.onclick = () => {
-      reloadApp()
-    }
-  }
 }
 
 function cleanSearch() {
@@ -829,16 +763,11 @@ function handleImportLocalPlugin() {
   loading.value = true
 }
 
-function handleUpdateAllPlugin() {
-  window.electron.sendRPC(IRPCActionType.PLUGIN_UPDATE_ALL, toRaw(pluginNameList.value))
-}
-
 onBeforeMount(async () => {
   window.electron.ipcRendererOn('hideLoading', hideLoadingHandler)
   window.electron.ipcRendererOn(PICGO_HANDLE_PLUGIN_DONE, picgoHandlePluginDoneHandler)
   window.electron.ipcRendererOn('pluginList', pluginListHandler)
   window.electron.ipcRendererOn('installPlugin', installPluginHandler)
-  window.electron.ipcRendererOn('updateSuccess', updateSuccessHandler)
   window.electron.ipcRendererOn('uninstallSuccess', uninstallSuccessHandler)
   window.electron.ipcRendererOn(PICGO_CONFIG_PLUGIN, picgoConfigPluginHandler)
   window.electron.ipcRendererOn(PICGO_HANDLE_PLUGIN_ING, picgoHandlePluginIngHandler)
@@ -852,7 +781,6 @@ onBeforeUnmount(() => {
   window.electron.ipcRendererRemoveAllListeners('pluginList')
   window.electron.ipcRendererRemoveAllListeners('installPlugin')
   window.electron.ipcRendererRemoveAllListeners('uninstallSuccess')
-  window.electron.ipcRendererRemoveAllListeners('updateSuccess')
   window.electron.ipcRendererRemoveAllListeners('hideLoading')
   window.electron.ipcRendererRemoveAllListeners(PICGO_HANDLE_PLUGIN_DONE)
   window.electron.ipcRendererRemoveAllListeners(PICGO_CONFIG_PLUGIN)

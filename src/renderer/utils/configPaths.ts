@@ -36,7 +36,6 @@ export interface IConfigStruct {
     logFileSizeLimit: number
     isAutoListenClipboard: boolean
     isListeningClipboard: boolean
-    showUpdateTip: boolean
     miniWindowPosition: [number, number]
     miniWindowOntop: boolean
     mainWindowWidth: number
@@ -138,7 +137,6 @@ export const configPaths = {
     logFileSizeLimit: 'settings.logFileSizeLimit',
     isAutoListenClipboard: 'settings.isAutoListenClipboard',
     isListeningClipboard: 'settings.isListeningClipboard',
-    showUpdateTip: 'settings.showUpdateTip',
     miniWindowPosition: 'settings.miniWindowPosition',
     miniWindowOntop: 'settings.miniWindowOntop',
     isHideDock: 'settings.isHideDock',

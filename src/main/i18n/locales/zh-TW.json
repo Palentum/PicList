@@ -23,7 +23,6 @@
       "startWatchClipboard": "開始監視剪貼板",
       "stopWatchClipboard": "停止監視剪貼板",
       "uninstallPlugin": "卸載插件",
-      "updatePlugin": "更新插件",
       "uploadClipboardImage": "上傳剪貼板圖片"
     },
     "notification": {
@@ -45,7 +44,6 @@
       "pluginRemoveGalleryItem": "有插件正在試圖刪除一些相冊圖片，是否允許？",
       "taskSuccessMsg": "{{completed}} 成功，{{failed}} 失敗",
       "uninstallPluginFailed": "卸載插件失敗",
-      "updatePluginFailed": "更新插件失敗",
       "uploadFailed": "上傳失敗",
       "uploading": "上傳中",
       "uploadNotPicturesTips": "剪貼板最新內容不是圖片",

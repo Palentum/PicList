@@ -11,7 +11,6 @@ import { settingRouter } from '~/events/rpc/routes/setting'
 import { systemRouter } from '~/events/rpc/routes/system'
 import { toolboxRouter } from '~/events/rpc/routes/toolbox'
 import { trayRouter } from '~/events/rpc/routes/tray'
-import { updaterRouter } from '~/events/rpc/routes/updater'
 import { uploadRouter } from '~/events/rpc/routes/upload'
 import { IRPCType } from '~/utils/enum'
 
@@ -70,7 +69,6 @@ const routes = [
   toolboxRouter.routes(),
   trayRouter.routes(),
   uploadRouter.routes(),
-  updaterRouter.routes(),
   manageRouter.routes(),
 ]
 
